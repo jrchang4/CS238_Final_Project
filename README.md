@@ -1,4 +1,5 @@
 # RLCard: A Toolkit for Reinforcement Learning in Card Games
+# Modified by Emily Ross, Thomas Maheras, and Joshua Chang
 <img width="500" src="./docs/imgs/logo.jpg" alt="Logo" />
 
 [![Build Status](https://travis-ci.org/datamllab/RLCard.svg?branch=master)](https://travis-ci.org/datamllab/RLCard)
