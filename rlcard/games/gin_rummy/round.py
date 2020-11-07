@@ -28,6 +28,7 @@ from . import judge
 
 from rlcard.games.gin_rummy.utils import melding
 from rlcard.games.gin_rummy.utils import utils
+from rlcard.utils import utils as ut
 
 
 class GinRummyRound(object):
@@ -74,7 +75,8 @@ class GinRummyRound(object):
         # when current_player takes DrawCardAction step, the move is recorded and executed
         # current_player keeps turn
         current_player = self.players[self.current_player_id]
-        if not len(current_player.hand) == 10:
+        #if not len(current_player.hand) == 10:
+        if not len(current_player.hand) == ut.NUM_CARDS:
             raise GinRummyProgramError("len(current_player.hand) is {}: should be 10.".format(len(current_player.hand)))
         card = self.dealer.stock_pile.pop()
         self.move_sheet.append(DrawCardMove(current_player, action=action, card=card))
@@ -85,7 +87,8 @@ class GinRummyRound(object):
         # opponent knows that the card is in current_player hand
         # current_player keeps turn
         current_player = self.players[self.current_player_id]
-        if not len(current_player.hand) == 10:
+        #if not len(current_player.hand) == 10:
+        if not len(current_player.hand) == ut.NUM_CARDS:
             raise GinRummyProgramError("len(current_player.hand) is {}: should be 10.".format(len(current_player.hand)))
         card = self.dealer.discard_pile.pop()
         self.move_sheet.append(PickupDiscardMove(current_player, action, card=card))
@@ -99,7 +102,8 @@ class GinRummyRound(object):
         self.move_sheet.append(DeclareDeadHandMove(current_player, action))
         self.going_out_action = action
         self.going_out_player_id = self.current_player_id
-        if not len(current_player.hand) == 10:
+        #if not len(current_player.hand) == 10:
+        if not len(current_player.hand) == ut.NUM_CARDS:
             raise GinRummyProgramError("len(current_player.hand) is {}: should be 10.".format(len(current_player.hand)))
         self.current_player_id = 0
 
@@ -108,7 +112,8 @@ class GinRummyRound(object):
         # opponent knows that the card is no longer in current_player hand
         # current_player loses his turn and the opponent becomes the current player
         current_player = self.players[self.current_player_id]
-        if not len(current_player.hand) == 11:
+        # if not len(current_player.hand) == 11:
+        if not len(current_player.hand) == ut.NUM_CARDS+1:
             raise GinRummyProgramError("len(current_player.hand) is {}: should be 11.".format(len(current_player.hand)))
         self.move_sheet.append(DiscardMove(current_player, action))
         card = action.card
@@ -126,7 +131,8 @@ class GinRummyRound(object):
         self.move_sheet.append(KnockMove(current_player, action))
         self.going_out_action = action
         self.going_out_player_id = self.current_player_id
-        if not len(current_player.hand) == 11:
+        #if not len(current_player.hand) == 11:
+        if not len(current_player.hand) == ut.NUM_CARDS+1:
             raise GinRummyProgramError("len(current_player.hand) is {}: should be 11.".format(len(current_player.hand)))
         card = action.card
         current_player.remove_card_from_hand(card=card)
@@ -142,7 +148,8 @@ class GinRummyRound(object):
         self.move_sheet.append(GinMove(current_player, action))
         self.going_out_action = action
         self.going_out_player_id = self.current_player_id
-        if not len(current_player.hand) == 11:
+        #if not len(current_player.hand) == 11:
+        if not len(current_player.hand) == ut.NUM_CARDS+1:
             raise GinRummyProgramError("len(current_player.hand) is {}: should be 11.".format(len(current_player.hand)))
         _, gin_cards = judge.get_going_out_cards(current_player.hand, going_out_deadwood_count)
         card = gin_cards[0]

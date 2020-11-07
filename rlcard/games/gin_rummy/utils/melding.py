@@ -11,6 +11,8 @@ from rlcard.core import Card
 from rlcard.games.gin_rummy.utils import utils
 from rlcard.games.gin_rummy.utils.gin_rummy_error import GinRummyProgramError
 
+from rlcard.utils import utils as ut
+
 # ===============================================================
 #    Terminology:
 #        run_meld - three or more cards of same suit in sequence
@@ -51,7 +53,8 @@ def get_meld_clusters(hand: List[Card]) -> List[List[List[Card]]]:
 
 
 def get_best_meld_clusters(hand: List[Card]) -> List[List[List[Card]]]:
-    if len(hand) != 10:
+    #if len(hand) != 10:
+    if len(hand) != ut.NUM_CARDS:
         raise GinRummyProgramError("Hand contain {} cards: should be 10 cards.".format(len(hand)))
     result = []  # type: List[List[List[Card]]]
     meld_clusters = get_meld_clusters(hand=hand)  # type: List[List[List[Card]]]

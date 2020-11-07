@@ -2,6 +2,7 @@ import numpy as np
 
 from rlcard.core import Card, Player
 
+NUM_CARDS = 3
 
 def init_standard_deck():
     ''' Initialize a standard deck of 52 cards
