@@ -12,6 +12,8 @@ from rlcard.core import Card
 
 from .gin_rummy_error import GinRummyProgramError
 
+from rlcard.utils import utils as ut
+
 valid_rank = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
 valid_suit = ['S', 'H', 'D', 'C']
 
@@ -73,7 +75,8 @@ def get_deadwood_value(card: Card) -> int:
 
 
 def get_deadwood(hand: Iterable[Card], meld_cluster: List[Iterable[Card]]) -> List[Card]:
-    if len(list(hand)) != 10:
+    # if len(list(hand)) != 10:
+    if len(list(hand)) != ut.NUM_CARDS:
         raise GinRummyProgramError("Hand contain {} cards: should be 10 cards.".format(len(list(hand))))
     meld_cards = [card for meld_pile in meld_cluster for card in meld_pile]
     deadwood = [card for card in hand if card not in meld_cards]
@@ -81,7 +84,8 @@ def get_deadwood(hand: Iterable[Card], meld_cluster: List[Iterable[Card]]) -> Li
 
 
 def get_deadwood_count(hand: List[Card], meld_cluster: List[Iterable[Card]]) -> int:
-    if len(hand) != 10:
+    #if len(hand) != 10:
+    if len(hand) != ut.NUM_CARDS:
         raise GinRummyProgramError("Hand contain {} cards: should be 10 cards.".format(len(hand)))
     deadwood = get_deadwood(hand=hand, meld_cluster=meld_cluster)
     deadwood_values = [get_deadwood_value(card) for card in deadwood]

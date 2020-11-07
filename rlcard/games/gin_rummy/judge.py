@@ -16,6 +16,7 @@ from .utils import melding
 from .utils.gin_rummy_error import GinRummyProgramError
 
 from rlcard.games.gin_rummy.utils import utils
+from rlcard.utils import utils as ut
 
 
 class GinRummyJudge(object):
@@ -100,7 +101,8 @@ def get_going_out_cards(hand: List[Card], going_out_deadwood_count: int) -> Tupl
     :param going_out_deadwood_count: int
     :return List[Card], List[Card: cards in hand that be knocked, cards in hand that can be ginned
     '''
-    if not len(hand) == 11:
+    #if not len(hand) == 11:
+    if not len(hand) == ut.NUM_CARDS+1:
         raise GinRummyProgramError("len(hand) is {}: should be 11.".format(len(hand)))
     meld_clusters = melding.get_meld_clusters(hand=hand)
     knock_cards, gin_cards = _get_going_out_cards(meld_clusters=meld_clusters,
@@ -122,7 +124,9 @@ def _get_going_out_cards(meld_clusters: List[List[List[Card]]],
     :param going_out_deadwood_count: int
     :return List[Card], List[Card: cards in hand that be knocked, cards in hand that can be ginned
     '''
-    if not len(hand) == 11:
+    #if not len(hand) == 11:
+    if not len(hand) == ut.NUM_CARDS + 1:
+    #if not len(hand) == 4:
         raise GinRummyProgramError("len(hand) is {}: should be 11.".format(len(hand)))
     knock_cards = set()
     gin_cards = set()

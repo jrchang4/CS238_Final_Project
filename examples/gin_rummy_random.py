@@ -13,6 +13,7 @@ from rlcard.utils import set_global_seed
 
 from rlcard.games.gin_rummy.player import GinRummyPlayer
 from rlcard.games.gin_rummy.utils.move import DealHandMove
+from rlcard.utils import utils as ut
 
 # Make environment
 env = rlcard.make('gin-rummy', config={'seed': 0})
@@ -47,9 +48,12 @@ for episode in range(episode_num):
             player_dealing_id = move.player_dealing.player_id
             leading_player_id = GinRummyPlayer.opponent_id_of(player_dealing_id)
             shuffle_deck = move.shuffled_deck
-            leading_player_hand_text = [str(card) for card in shuffle_deck[-11:]]
-            dealing_player_hand_text = [str(card) for card in shuffle_deck[-21:-11]]
-            stock_pile_text = [str(card) for card in shuffle_deck[:31]]
+            #leading_player_hand_text = [str(card) for card in shuffle_deck[-11:]]
+            leading_player_hand_text = [str(card) for card in shuffle_deck[-(ut.NUM_CARDS+1):]]
+            #dealing_player_hand_text = [str(card) for card in shuffle_deck[-21:-11]]
+            dealing_player_hand_text = [str(card) for card in shuffle_deck[-(ut.NUM_CARDS*2+1):-(ut.NUM_CARDS+1)]]
+            #stock_pile_text = [str(card) for card in shuffle_deck[:31]]
+            stock_pile_text = [str(card) for card in shuffle_deck[:52-(ut.NUM_CARDS*2+1)]]
             short_name_of_player_dealing = GinRummyPlayer.short_name_of(player_id=player_dealing_id)
             short_name_of_player_leading = GinRummyPlayer.short_name_of(player_id=leading_player_id)
             print("player_dealing is {}; leading_player is {}.".format(short_name_of_player_dealing,
