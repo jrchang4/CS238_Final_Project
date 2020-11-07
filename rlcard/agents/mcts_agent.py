@@ -98,4 +98,4 @@ class MCTSAgent(object):
         return argmax(UCBs)
 
     def bonus(Nsa, ns):
-        return float("inf") if Nsa == 0 else sqrt(log(Ns)/Nsa)
+        return float("inf") if Nsa == 0 else sqrt(log(Ns)/ Nsa)

@@ -33,7 +33,7 @@ class Setting(Enum):
                 Setting.stockpile_dead_card_count: 2,
                 Setting.going_out_deadwood_count: 10,  # Can specify going_out_deadwood_count before running game.
                 Setting.max_drawn_card_count: 52,
-                Setting.is_allowed_knock: True,
+                Setting.is_allowed_knock: False,
                 Setting.is_allowed_gin: True,
                 Setting.is_allowed_pick_up_discard: True,
                 Setting.is_allowed_to_discard_picked_up_card: False,

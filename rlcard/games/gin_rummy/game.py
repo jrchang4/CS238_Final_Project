@@ -41,7 +41,7 @@ class GinRummyGame(Game):
         self.actions = []
         self.round = GinRummyRound(dealer_id=dealer_id, np_random=self.np_random)
         for i in range(2):
-            num = 11 if i == 0 else 10
+            num = 4 if i == 0 else 3
             player = self.round.players[(dealer_id + 1 + i) % 2]
             self.round.dealer.deal_cards(player=player, num=num)
         current_player_id = self.round.current_player_id
@@ -115,20 +115,20 @@ class GinRummyGame(Game):
         if not self.is_over():
             discard_pile = self.round.dealer.discard_pile
             top_discard = [] if not discard_pile else [discard_pile[-1]]
-            dead_cards = discard_pile[:-1]
+            #dead_cards = discard_pile[:-1]
             last_action = self.get_last_action()
             opponent_id = (player_id + 1) % 2
             opponent = self.round.players[opponent_id]
-            known_cards = opponent.known_cards
-            if isinstance(last_action, ScoreNorthPlayerAction) or isinstance(last_action, ScoreSouthPlayerAction):
-                known_cards = opponent.hand
-            unknown_cards = self.round.dealer.stock_pile + [card for card in opponent.hand if card not in known_cards]
+            #known_cards = opponent.known_cards
+            #if isinstance(last_action, ScoreNorthPlayerAction) or isinstance(last_action, ScoreSouthPlayerAction):
+            #    known_cards = opponent.hand
+            #unknown_cards = self.round.dealer.stock_pile + [card for card in opponent.hand if card not in known_cards]
             state['player_id'] = self.round.current_player_id
             state['hand'] = [x.get_index() for x in self.round.players[self.round.current_player_id].hand]
             state['top_discard'] = [x.get_index() for x in top_discard]
-            state['dead_cards'] = [x.get_index() for x in dead_cards]
-            state['opponent_known_cards'] = [x.get_index() for x in known_cards]
-            state['unknown_cards'] = [x.get_index() for x in unknown_cards]
+            #state['dead_cards'] = [x.get_index() for x in dead_cards]
+            #state['opponent_known_cards'] = [x.get_index() for x in known_cards]
+            #state['unknown_cards'] = [x.get_index() for x in unknown_cards]
         return state
 
     @staticmethod
