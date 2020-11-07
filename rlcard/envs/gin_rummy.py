@@ -21,7 +21,7 @@ class GinRummyEnv(Env):
         self.name = 'gin-rummy'
         self.game = Game()
         super().__init__(config=config)
-        self.state_shape = [5, 52]
+        self.state_shape = [2, 52]
 
     def _extract_state(self, state):  # 200213 don't use state ???
         ''' Encode state
