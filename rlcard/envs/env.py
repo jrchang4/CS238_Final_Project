@@ -192,7 +192,7 @@ class Env(object):
         while not self.is_over():
             # Agent plays
             if not is_training:
-                action, _ = self.agents[player_id].eval_step(state)
+                action, _ = self.agents[player_id].eval_step(state, palyer_id, self.deepcopy())
             else:
                 action = self.agents[player_id].step(state)
 
@@ -216,6 +216,7 @@ class Env(object):
 
         # Payoffs
         payoffs = self.get_payoffs()
+        print("PAYOFFS: ", payoffs)
 
         # Reorganize the trajectories
         trajectories = reorganize(trajectories, payoffs)

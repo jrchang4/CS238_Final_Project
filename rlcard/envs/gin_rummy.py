@@ -30,15 +30,12 @@ class GinRummyEnv(Env):
             state (dict): dict of original state
 
         Returns:
-            numpy array: 5 * 52 array
-                         5 : current hand (1 if card in hand else 0)
+            numpy array: 2 * 52 array
+                         2 : current hand (1 if card in hand else 0)
                              top_discard (1 if card is top discard else 0)
-                             dead_cards (1 for discards except for top_discard else 0)
-                             opponent known cards (likewise)
-                             unknown cards (likewise)  # is this needed ??? 200213
         '''
         if self.game.is_over():
-            obs = np.array([self._utils.encode_cards([]) for _ in range(5)])
+            obs = np.array([self._utils.encode_cards([]) for _ in range(2)])
             extracted_state = {'obs': obs, 'legal_actions': self._get_legal_actions()}
         else:
             discard_pile = self.game.round.dealer.discard_pile
@@ -72,6 +69,7 @@ class GinRummyEnv(Env):
             if move_sheet and isinstance(move_sheet[-1], self._ScoreSouthMove):
                 is_game_complete = True
         payoffs = [0, 0] if not is_game_complete else self.game.judge.scorer.get_payoffs(game=self.game)
+
         return np.array(payoffs)
 
     def _decode_action(self, action_id):  # FIXME 200213 should return str

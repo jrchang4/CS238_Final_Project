@@ -4,16 +4,22 @@ from rlcard.games.gin_rummy.utils.action_event import ActionEvent
 from rlcard.games.gin_rummy.utils.gin_rummy_error import GinRummyProgramError
 from rlcard.models.gin_rummy_rule_models import GinRummyNoviceRuleAgent as novice
 
-class MCTS:
+class MCTS(object):
     def __init__(self):
-        A = 
+        self.d = 10
 
+    # def TR(s, a):
+    #     state = {}
+    #     reward = 0
+    #     if a == 0: #return state prime w/ 100% confidence
+    #         state['legal_actions'] = np.array([0 for i in range(52)])
+    #     return state, reward
 
 class MCTSAgent(object):
     ''' A human agent for Gin Rummy. It can be used to play against trained models.
     '''
 
-    def __init__(self, kmax=500, c):
+    def __init__(self, c, kmax=500):
         ''' Initialize the human agent
 
         Args:
@@ -28,7 +34,7 @@ class MCTSAgent(object):
         action = np.random.choice(np.arange(len(state['legal_actions'])), p=state['legal_actions'])
         return action
 
-    def eval_step(self, state):
+    def eval_step(self, state, player_id, sim_env):
         ''' Predict the action given the current state for evaluation.
 
         Args:
@@ -37,38 +43,47 @@ class MCTSAgent(object):
         Returns:
             action (int): the action predicted by the MCTS agent
         '''
+        print("MCTS STATE:", state)
         for k in self.kmax:
-            simulate(MCTS, state)
+            simulate(MCTS, state, player_id, deep_copy(sim_env))
 
         return np.argmax(MCTS.Q) #return action that maximizes Q
 
-    def simulate(MCTS, s, d=MCTS.d):
+    def simulate(MCTS, s, sim_env, d=10):
         if d <= 0:
             return 0
 
-        A, TR, gamma, N, Q, c = MCTS.A, MCTS.TR, MCTS.gamma, MCTS.N, MCTS.Q, MCTS.c
+        gamma, N, Q, c = MCTS.gamma, MCTS.N, MCTS.Q, MCTS.c
+        A = s['legal_actions']
 
-        if !N.has_key((s, A[0])):
+        if not N.has_key((s, A[0])):
             for a in A:
                 N[(s,a)] = 0
                 Q[(s,a)] = 0
-            return rollout(MCTS, s, d)
+            return rollout(MCTS, s, d, sim_env)
 
         a = explore(MCTS, s)
-        sp, r = TR(s, a) #TODO: HOW DO WE GENERATE THE NEXT STATE RANDOMLY FROM TR
-        q = r + gamma*simulate(MCTS, sp, d - 1)
+        sp, next_player_id = sim_env.step(action, sim_env.agents[player_id].use_raw)
+        #sp, r = TR[(s, a)] #TODO: HOW DO WE GENERATE THE NEXT STATE RANDOMLY FROM TR
+        r = 0
+        if sim_env.game.is_over():
+            r == sim_env.get_payoffs()[player_id] #TODO: IS THIS CORRECT
+        q = r + gamma*simulate(MCTS, sp, sim_env d - 1) #TODO: when do we make fresh copies??? 
         N[(s, a)] += 1
         Q[(s, a)] += (q - Q[(s, a)]) / N[(s, a)]
 
         return 1
 
-    def rollout(MCTS, s, d):
+    def rollout(MCTS, s, d, sim_env):
         if d <= 0:
             return 0
 
         a = novice.step(s) #TODO: IS OUR ROLLOUT POLICY JUST THE NOVICE POLICY?
-        sp, r = MCTS.TR[(s, a)] #TODO: HOW DO WE GENERATE THE NEXT STATE RANDOMLY FROM TR
-
+        #sp, r = MCTS.TR[(s, a)] #TODO: HOW DO WE GENERATE THE NEXT STATE RANDOMLY FROM TR
+        sp, next_player_id = sim_env.step(action, sim_env.agents[player_id].use_raw)
+        r = 0
+        if sim_env.game.is_over():
+            r == sim_env.get_payoffs()[player_id] #TODO: IS THIS CORRECT
         return r + MCTS.gamma * rollout(MCTS, sp, d - 1)
 
     def explore(MCTS, s):
