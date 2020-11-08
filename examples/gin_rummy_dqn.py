@@ -27,7 +27,7 @@ env.game.settings.print_settings()
 # Set the iterations numbers and how frequently we evaluate/save plot
 evaluate_every = 50
 evaluate_num = 100  # mahjong_dqn has 1000
-episode_num = 100000 # mahjong_dqn has 100000
+episode_num = 10000 # mahjong_dqn has 100000
 
 # The initial memory size
 memory_init_size = 10000
@@ -58,7 +58,7 @@ with tf.Session() as sess:
                      replay_memory_init_size=memory_init_size,
                      train_every=train_every,
                      state_shape=env.state_shape,
-                     mlp_layers=[2048, 512])
+                     mlp_layers=[2048,1024, 1024, 512])
 
     random_agent = RandomAgent(action_num=eval_env.action_num)
 
