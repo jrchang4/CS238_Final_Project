@@ -1,0 +1,61 @@
+import rlcard
+from rlcard import models
+
+from rlcard.utils import set_global_seed
+from rlcard.games.gin_rummy.player import GinRummyPlayer
+from rlcard.agents.mcts_agent import MCTSAgent
+from rlcard.games.gin_rummy.utils.move import DealHandMove
+from rlcard.utils import utils as ut
+from rlcard.utils import Logger
+
+
+# Make environment
+env = rlcard.make('gin-rummy', config={'seed': 0})
+episode_num = 1
+env.game.settings.print_settings()
+
+# Set a global seed
+set_global_seed(0)
+
+# Set up agents
+agent = MCTSAgent(kmax=1000, c=.6)
+random_agent = RandomAgent(action_num=eval_env.action_num)
+env.set_agents([agent, random_agent])
+
+# Init a Logger to plot the learning curve
+logger = Logger(log_dir)
+
+for episode in range(episode_num):
+
+    # Generate data from the environment
+    trajectories, _ = env.run(is_training=False)
+
+    # Print out the trajectories
+    print('\nEpisode {}'.format(episode))
+    for ts in trajectories[0]:
+        print('State: {}, Action: {}, Reward: {}, Next State: {}, Done: {}'.format(ts[0], ts[1], ts[2], ts[3], ts[4]))
+
+    # print move sheet
+    print("\n========== Move Sheet ==========")
+    move_sheet = env.game.round.move_sheet
+    move_sheet_count = len(move_sheet)
+    for i in range(move_sheet_count):
+        move = move_sheet[i]
+        print("{}".format(move))
+        if i == 0 and isinstance(move, DealHandMove):
+            player_dealing_id = move.player_dealing.player_id
+            leading_player_id = GinRummyPlayer.opponent_id_of(player_dealing_id)
+            shuffle_deck = move.shuffled_deck
+            #leading_player_hand_text = [str(card) for card in shuffle_deck[-11:]]
+            leading_player_hand_text = [str(card) for card in shuffle_deck[-(ut.NUM_CARDS+1):]]
+            #dealing_player_hand_text = [str(card) for card in shuffle_deck[-21:-11]]
+            dealing_player_hand_text = [str(card) for card in shuffle_deck[-(ut.NUM_CARDS*2+1):-(ut.NUM_CARDS+1)]]
+            #stock_pile_text = [str(card) for card in shuffle_deck[:31]]
+            stock_pile_text = [str(card) for card in shuffle_deck[:52-(ut.NUM_CARDS*2+1)]]
+            short_name_of_player_dealing = GinRummyPlayer.short_name_of(player_id=player_dealing_id)
+            short_name_of_player_leading = GinRummyPlayer.short_name_of(player_id=leading_player_id)
+            print("player_dealing is {}; leading_player is {}.".format(short_name_of_player_dealing,
+                                                                       short_name_of_player_leading))
+            print("leading player hand: {}".format(leading_player_hand_text))
+            print("dealing player hand: {}".format(dealing_player_hand_text))
+            print("stock_pile: {}".format(stock_pile_text))

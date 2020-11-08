@@ -2,17 +2,18 @@ import time, math
 import numpy as np
 from rlcard.games.gin_rummy.utils.action_event import ActionEvent
 from rlcard.games.gin_rummy.utils.gin_rummy_error import GinRummyProgramError
+from rlcard.models.gin_rummy_rule_models import GinRummyNoviceRuleAgent as novice
 
 class MCTS:
     def __init__(self):
-        states = np
+        A = 
 
 
 class MCTSAgent(object):
     ''' A human agent for Gin Rummy. It can be used to play against trained models.
     '''
 
-    def __init__(self, kmax=500):
+    def __init__(self, kmax=500, c):
         ''' Initialize the human agent
 
         Args:
@@ -20,33 +21,12 @@ class MCTSAgent(object):
         '''
         self.use_raw = True
         self.kmax = kmax
+        self.c = c
 
-    def step(self, state): #TODO: WHAT IS THIS? DO WE EVEN NEED IT?
-        ''' Human agent will display the state and make decisions through interfaces
-
-        Args:
-            state (dict): A dictionary that represents the current state
-
-        Returns:
-            action (int): The action decided by human
-        '''
-        if self.is_choosing_action_id:
-            raise GinRummyProgramError("self.is_choosing_action_id must be False.")
-        if self.state is not None:
-            raise GinRummyProgramError("self.state must be None.")
-        if self.chosen_action_id is not None:
-            raise GinRummyProgramError("self.chosen_action_id={} must be None.".format(self.chosen_action_id))
-        self.state = state
-        self.is_choosing_action_id = True
-        while not self.chosen_action_id:
-            time.sleep(0.001)
-        if self.chosen_action_id is None:
-            raise GinRummyProgramError("self.chosen_action_id cannot be None.")
-        chosen_action_event = ActionEvent.decode_action(action_id=self.chosen_action_id)
-        self.state = None
-        self.is_choosing_action_id = False
-        self.chosen_action_id = None
-        return chosen_action_event
+    def step(self, state): #TODO: DONT NEED THIS ?
+        print("###BAD### MCTS STEP CALLED")
+        action = np.random.choice(np.arange(len(state['legal_actions'])), p=state['legal_actions'])
+        return action
 
     def eval_step(self, state):
         ''' Predict the action given the current state for evaluation.
@@ -86,7 +66,7 @@ class MCTSAgent(object):
         if d <= 0:
             return 0
 
-        a = MCTS.pi[s] #TODO: IS OUR ROLLOUT POLICY JUST THE NOVICE POLICY?
+        a = novice.step(s) #TODO: IS OUR ROLLOUT POLICY JUST THE NOVICE POLICY?
         sp, r = MCTS.TR[(s, a)] #TODO: HOW DO WE GENERATE THE NEXT STATE RANDOMLY FROM TR
 
         return r + MCTS.gamma * rollout(MCTS, sp, d - 1)
