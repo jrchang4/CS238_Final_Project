@@ -98,7 +98,7 @@ with tf.Session() as sess:
         # Evaluate the performance. Play with random agents.
         if episode % evaluate_every == 0:
             logger.log_performance(env.timestep, tournament(eval_env, evaluate_num)[0])
-            writer.add_scalar('Reward', tournament(eval_env, evaluate_num)[0], env.timestep)
+            writer.add_scalar('Reward', tournament(eval_env, evaluate_num)[0], episode_num)
 
     # Close files in the logger
     logger.close_files()
