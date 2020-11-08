@@ -20,8 +20,8 @@ import datetime
 import pytz
 
 # Make environment
-env = rlcard.make('gin-rummy', config={'seed': 0})
-eval_env = rlcard.make('gin-rummy', config={'seed': 0})
+env = rlcard.make('gin-rummy')
+eval_env = rlcard.make('gin-rummy')
 env.game.settings.print_settings()
 
 # Set the iterations numbers and how frequently we evaluate/save plot
@@ -39,7 +39,7 @@ train_every = 1
 log_dir = './experiments/gin_rummy_dqn_result/'
 
 # Set a global seed
-set_global_seed(0)
+#set_global_seed(0)
 
 utc_now = pytz.utc.localize(datetime.datetime.utcnow())
 pst_now = utc_now.astimezone(pytz.timezone("America/Los_Angeles"))    
