@@ -27,10 +27,10 @@ env.game.settings.print_settings()
 # Set the iterations numbers and how frequently we evaluate/save plot
 evaluate_every = 50
 evaluate_num = 100  # mahjong_dqn has 1000
-episode_num = 1000  # mahjong_dqn has 100000
+episode_num = 100000 # mahjong_dqn has 100000
 
 # The initial memory size
-memory_init_size = 1000
+memory_init_size = 10000
 
 # Train the agent every X steps
 train_every = 1
