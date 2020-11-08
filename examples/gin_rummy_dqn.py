@@ -58,7 +58,7 @@ with tf.Session() as sess:
                      replay_memory_init_size=memory_init_size,
                      train_every=train_every,
                      state_shape=env.state_shape,
-                     mlp_layers=[512*32,512*32, 512*16, 512*16, 512*8, 512*8, 512*4, 512*4])
+                     mlp_layers=[512*16,512*16, 512*8, 512*8, 512*4, 512*4, 512*2, 512*2, 512, 512])
 
     random_agent = RandomAgent(action_num=eval_env.action_num)
 
