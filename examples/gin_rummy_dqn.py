@@ -20,8 +20,8 @@ import datetime
 import pytz
 
 # Make environment
-env = rlcard.make('gin-rummy')
-eval_env = rlcard.make('gin-rummy')
+env = rlcard.make('gin-rummy', config = {'seed':0})
+eval_env = rlcard.make('gin-rummy', config = {'seed':0})
 env.game.settings.print_settings()
 
 # Set the iterations numbers and how frequently we evaluate/save plot
@@ -39,12 +39,13 @@ train_every = 1
 log_dir = './experiments/gin_rummy_dqn_result/'
 
 # Set a global seed
-#set_global_seed(0)
+set_global_seed(0)
 
 utc_now = pytz.utc.localize(datetime.datetime.utcnow())
 pst_now = utc_now.astimezone(pytz.timezone("America/Los_Angeles"))    
-current_time = pst_now.strftime("%Y-%m-%d-%H:%M:%S")
+current_time = pst_now.strftime("%Y-%m-%d-%H-%M-%S")
 log_dir = '../tensorboard_logs/' + current_time
+print(current_time)
 os.makedirs(log_dir, exist_ok=True)
 writer = SummaryWriter(log_dir=log_dir)
 
@@ -98,10 +99,13 @@ with tf.Session() as sess:
         # Evaluate the performance. Play with random agents.
         if episode % evaluate_every == 0:
             logger.log_performance(env.timestep, tournament(eval_env, evaluate_num)[0])
-            writer.add_scalar('Reward', tournament(eval_env, evaluate_num)[0], episode_num)
+            writer.add_scalar('Reward', tournament(eval_env, evaluate_num)[0], episode)
+
+    writer.close()
 
     # Close files in the logger
     logger.close_files()
+
 
     # Plot the learning curve
     logger.plot('DQN')
