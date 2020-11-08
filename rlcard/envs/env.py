@@ -1,4 +1,5 @@
 from rlcard.utils import *
+from copy import copy
 
 class Env(object):
     '''
@@ -192,7 +193,10 @@ class Env(object):
         while not self.is_over():
             # Agent plays
             if not is_training:
-                action, _ = self.agents[player_id].eval_step(state, palyer_id, self.deepcopy())
+                arg = state
+                if player_id == 0:
+                    arg = (state, player_id, copy(self))
+                action, _ = self.agents[player_id].eval_step(arg)
             else:
                 action = self.agents[player_id].step(state)
 
