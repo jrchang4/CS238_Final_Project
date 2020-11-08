@@ -44,7 +44,7 @@ set_global_seed(0)
 utc_now = pytz.utc.localize(datetime.datetime.utcnow())
 pst_now = utc_now.astimezone(pytz.timezone("America/Los_Angeles"))    
 current_time = pst_now.strftime("%Y-%m-%d-%H:%M:%S")
-log_dir = '../tensorboard_logs/'
+log_dir = '../tensorboard_logs/' + current_time
 os.makedirs(log_dir, exist_ok=True)
 writer = SummaryWriter(log_dir=log_dir)
 
