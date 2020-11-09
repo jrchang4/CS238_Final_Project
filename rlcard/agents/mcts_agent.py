@@ -130,8 +130,8 @@ class MCTSAgent(object):
             occurrence = np.random.randint(48)
             index = [i for i, card in enumerate(deck) if card == 1][occurrence]
             s['obs'][1][index] = 1
-        else:
-            a = novice.step(s) #TODO: IS OUR ROLLOUT POLICY JUST THE NOVICE POLICY?
+            player_id = 0
+        a = novice.step(s) #TODO: IS OUR ROLLOUT POLICY JUST THE NOVICE POLICY?
         if a == 5:
             print("GIN!! WINNER = %s" % player_id)
             winner = player_id
