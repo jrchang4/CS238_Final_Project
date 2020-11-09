@@ -99,12 +99,9 @@ class DQNAgent(object):
         # The epsilon decay scheduler
         self.epsilons = np.linspace(epsilon_start, epsilon_end, epsilon_decay_steps)
 
-        initial_learning_rate = learning_rate
-        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
-            initial_learning_rate,
-            decay_steps=10000,
-            decay_rate=0.96,
-            staircase=True)
+        lr_schedule = tf.train.exponential_decay(learning_rate,
+                                        self.train_t, 10000,
+                                        0.96, staircase=True)
 
         # Create estimators
         self.q_estimator = Estimator(scope=self.scope+"_q", action_num=action_num, learning_rate=lr_schedule, state_shape=state_shape, mlp_layers=mlp_layers)
