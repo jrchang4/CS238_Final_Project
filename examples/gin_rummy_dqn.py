@@ -16,6 +16,8 @@ from rlcard.agents import RandomAgent
 from rlcard.utils import set_global_seed, tournament
 from rlcard.utils import Logger
 from tensorboardX import SummaryWriter
+from rlcard.games.gin_rummy.utils.move import DealHandMove
+from rlcard.games.gin_rummy.player import GinRummyPlayer
 import datetime
 import pytz
 
@@ -80,6 +82,31 @@ with tf.Session() as sess:
         # Generate data from the environment
         trajectories, _ = env.run(is_training=True)
 
+        """
+
+        move_sheet = env.game.round.move_sheet
+        move_sheet_count = len(move_sheet)
+        move_sheet_count = len(move_sheet)
+        for i in range(move_sheet_count):
+            move = move_sheet[i]
+            print("{}".format(move))
+            if i == 0 and isinstance(move, DealHandMove):
+                player_dealing_id = move.player_dealing.player_id
+                leading_player_id = GinRummyPlayer.opponent_id_of(player_dealing_id)
+                shuffle_deck = move.shuffled_deck
+                leading_player_hand_text = [str(card) for card in shuffle_deck[-11:]]
+                dealing_player_hand_text = [str(card) for card in shuffle_deck[-21:-11]]
+                stock_pile_text = [str(card) for card in shuffle_deck[:31]]
+                short_name_of_player_dealing = GinRummyPlayer.short_name_of(player_id=player_dealing_id)
+                short_name_of_player_leading = GinRummyPlayer.short_name_of(player_id=leading_player_id)
+                print("player_dealing is {}; leading_player is {}.".format(short_name_of_player_dealing,
+                                                                       short_name_of_player_leading))
+                print("leading player hand: {}".format(leading_player_hand_text))
+                print("dealing player hand: {}".format(dealing_player_hand_text))
+                print("stock_pile: {}".format(stock_pile_text))
+        """
+   
+
         # Feed transitions into agent memory, and train the agent
         for ts in trajectories[0]:
             agent.feed(ts)
@@ -100,8 +127,10 @@ with tf.Session() as sess:
 
         # Evaluate the performance. Play with random agents.
         if episode % evaluate_every == 0:
-            logger.log_performance(env.timestep, tournament(eval_env, evaluate_num)[0])
-            writer.add_scalar('Reward', tournament(eval_env, evaluate_num)[0], env.timestep)
+            player1 = tournament(eval_env, evaluate_num)[0]
+            player2 = tournament(eval_env, evaluate_num)[1]
+            logger.log_performance(env.timestep, player1 - player2)
+            writer.add_scalar('Reward', player1 - player2, env.timestep)
 
     writer.close()
 
