@@ -70,11 +70,12 @@ with tf.Session() as sess:
     # 512*16,512*16, 512*8, 512*8, 512*4, 512*4, 512*2, 512*2, 512, 512
 
     random_agent = RandomAgent(action_num=eval_env.action_num)
+    novice_agent = models.load("gin-rummy-novice-rule").agents[0]
 
     sess.run(tf.global_variables_initializer())
 
-    env.set_agents([agent, random_agent])
-    eval_env.set_agents([agent, random_agent])
+    env.set_agents([agent, novice_agent])
+    eval_env.set_agents([agent, novice_agent])
 
     # Init a Logger to plot the learning curve
     logger = Logger(log_dir)
