@@ -61,7 +61,7 @@ with tf.Session() as sess:
                      action_num=env.action_num,
                      replay_memory_size=20000,
                      replay_memory_init_size=memory_init_size,
-                     update_target_estimator_every=500,
+                     update_target_estimator_every=250,
                      train_every=train_every,
                      state_shape=env.state_shape,
                      mlp_layers=[512*4, 512*4, 512*2, 512*2, 512, 512])
