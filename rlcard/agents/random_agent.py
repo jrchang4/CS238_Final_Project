@@ -27,7 +27,7 @@ class RandomAgent(object):
         #return np.random.randint(0, self.action_num)
         return np.random.choice(state['legal_actions'])
 
-    def eval_step(self, state):
+    def eval_step(self, arg):
         ''' Predict the action given the current state for evaluation.
             Since the random agents are not trained. This function is equivalent to step function
 
@@ -38,6 +38,7 @@ class RandomAgent(object):
             action (int): The action predicted (randomly chosen) by the random agent
             probs (list): The list of action probabilities
         '''
+        state = arg[0]
         probs = [0 for _ in range(self.action_num)]
         for i in state['legal_actions']:
             probs[i] = 1/len(state['legal_actions'])

@@ -1,5 +1,4 @@
 from rlcard.utils import *
-from copy import copy
 
 class Env(object):
     '''
@@ -193,10 +192,7 @@ class Env(object):
         while not self.is_over():
             # Agent plays
             if not is_training:
-                arg = state
-                if player_id == 0:
-                    arg = (state, player_id, copy(self))
-                action, _ = self.agents[player_id].eval_step(arg)
+                action, _ = self.agents[player_id].eval_step((state, player_id))
             else:
                 action = self.agents[player_id].step(state)
 
@@ -220,7 +216,6 @@ class Env(object):
 
         # Payoffs
         payoffs = self.get_payoffs()
-        print("PAYOFFS: ", payoffs)
 
         # Reorganize the trajectories
         trajectories = reorganize(trajectories, payoffs)
