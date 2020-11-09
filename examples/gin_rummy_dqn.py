@@ -11,6 +11,7 @@ import os
 
 import rlcard
 
+from rlcard import models
 from rlcard.agents import DQNAgent
 from rlcard.agents import RandomAgent
 from rlcard.utils import set_global_seed, tournament
