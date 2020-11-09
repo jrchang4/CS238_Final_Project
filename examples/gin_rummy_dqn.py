@@ -64,6 +64,7 @@ with tf.Session() as sess:
                      update_target_estimator_every=250,
                      train_every=train_every,
                      state_shape=env.state_shape,
+                     learning_rate=0.005,
                      mlp_layers=[512*4, 512*4, 512*2, 512*2, 512, 512])
 
     # 512*16,512*16, 512*8, 512*8, 512*4, 512*4, 512*2, 512*2, 512, 512
