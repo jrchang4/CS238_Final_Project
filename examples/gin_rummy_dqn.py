@@ -29,7 +29,7 @@ eval_env = rlcard.make('gin-rummy')
 env.game.settings.print_settings()
 
 # Set the iterations numbers and how frequently we evaluate/save plot
-evaluate_every = 50
+evaluate_every = 100
 evaluate_num = 100  # mahjong_dqn has 1000
 episode_num = 10000 # mahjong_dqn has 100000
 
