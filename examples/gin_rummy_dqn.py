@@ -127,8 +127,7 @@ with tf.Session() as sess:
 
         # Evaluate the performance. Play with random agents.
         if episode % evaluate_every == 0:
-            player1 = tournament(eval_env, evaluate_num)[0]
-            player2 = tournament(eval_env, evaluate_num)[1]
+            player1, player2 = tournament(eval_env, evaluate_num)[0]
             logger.log_performance(env.timestep, player1 - player2)
             writer.add_scalar('Reward', player1 - player2, env.timestep)
 
